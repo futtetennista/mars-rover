@@ -67,8 +67,8 @@ applyNextMove = curry robot
         (E, L) -> Robot (x, y) N
         (E, R) -> Robot (x, y) S
         (E, F) -> Robot (x + 1, y) E
-        (S, L) -> Robot (x, y) W
-        (S, R) -> Robot (x, y) E
+        (S, L) -> Robot (x, y) E
+        (S, R) -> Robot (x, y) W
         (S, F) -> Robot (x, y - 1) S
         (W, L) -> Robot (x, y) S
         (W, R) -> Robot (x, y) N
@@ -83,17 +83,3 @@ data Robot = Robot
 prettyRobot :: Robot -> String
 prettyRobot Robot {..} =
   show (fst rPosition, snd rPosition, rOrientation)
-
--- class RobotOperations a where
---   next :: Move -> a -> a
---   step :: a -> Int
---   move :: [Move] -> GenericRobotState a
-
--- move [] st = st
--- move _ lost@Lost{} = lost
--- move (m:ms) (Found robot) = do
---   (grid, robot) <- get
---   case st of
---     Lost robot -> Lost robot
---     Found robot ->
---       pure $ next move robot

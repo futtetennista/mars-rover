@@ -16,7 +16,6 @@ import Data.Attoparsec.ByteString.Char8
     endOfInput,
     parseOnly,
     skipSpace,
-    space,
   )
 import Data.ByteString (ByteString)
 import RobotV1 (Grid, Move (..), Orientation (..), Robot (..))
@@ -30,6 +29,9 @@ grid :: Parser Grid
 grid = do
   n <- skipSpace *> decimal
   m <- skipSpace *> decimal <* skipSpace <* endOfInput
+  -- If they are less than 0 then either of these two might be the reason:
+  -- 1. the input was negative
+  -- 2. the input was too big and caused an overflow
   when (n <= 0 || m <= 0) do
     fail $
       "Grid bounds must be greater than 0 but were: ("
@@ -52,7 +54,7 @@ grid = do
 parseRobotAndMoves :: ByteString -> Either String (Robot, [Move])
 parseRobotAndMoves = parseOnly parser
   where
-    parser = (,) <$> robot <*> (some space *> moves <* endOfInput)
+    parser = (,) <$> robot <*> (skipSpace *> moves <* endOfInput)
 
 parseMoves :: ByteString -> Either String [Move]
 parseMoves = parseOnly moves
@@ -94,7 +96,10 @@ robot = do
   _ <- comma
   orientation' <- orientation
   _ <- char ')'
-  when (x <= 0 || x <= 0) do
+  -- If they are less than 0 then either of these two might be the reason:
+  -- 1. the input was negative
+  -- 2. the input was too big and caused an overflow
+  when (x <= 0 || y <= 0) do
     fail $
       "Coordinates must be between 0 and " ++ show (maxBound :: Int)
         ++ " but were: ("
