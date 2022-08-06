@@ -6,10 +6,10 @@ module Main (main) where
 import Control.Monad (forM, forM_)
 import qualified Data.ByteString as B (getLine)
 import Parser (parseGrid, parseRobotAndMoves)
-import RobotV1
+import Robot
   ( Grid,
     RobotState (..),
-    moveRobot,
+    move,
     prettyState,
   )
 
@@ -29,8 +29,8 @@ main = go
           -- Apply moves to the robots or print an error if input is invalid
           forM_ robots \case
             Left err -> print err
-            Right (robot, moves) -> do
-              let outcome = moveRobot moves grid (Found robot)
+            Right (robot, movements) -> do
+              let outcome = move movements grid (Located robot)
               print $ prettyState outcome
           go
 

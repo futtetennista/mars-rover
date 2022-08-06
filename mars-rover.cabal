@@ -9,6 +9,8 @@ version:        0.1.0.0
 author:         Stefano
 maintainer:     Stefano
 build-type:     Simple
+tested-with:
+    GHC == 8.10.7
 extra-source-files:
     README.md
     stack.yaml
@@ -16,7 +18,7 @@ extra-source-files:
 library
   exposed-modules:
       Parser
-      RobotV1
+      Robot
   other-modules:
       Paths_mars_rover
   hs-source-dirs:
@@ -28,12 +30,12 @@ library
       LambdaCase
   ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   build-depends:
-      attoparsec
+      attoparsec ==0.13.2.5
     , base ==4.14.3.0
-    , bytestring
+    , bytestring ==0.10.12.0
   default-language: Haskell2010
 
-executable application
+executable mars-rover
   main-is: Main.hs
   other-modules:
       Paths_mars_rover
@@ -42,7 +44,7 @@ executable application
   ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   build-depends:
       base ==4.14.3.0
-    , bytestring
+    , bytestring ==0.10.12.0
     , mars-rover
   default-language: Haskell2010
 
@@ -51,7 +53,7 @@ test-suite mars-rover-test
   main-is: Main.hs
   other-modules:
       ParserTest
-      RobotV1Test
+      RobotTest
       Paths_mars_rover
   hs-source-dirs:
       test/
@@ -63,13 +65,12 @@ test-suite mars-rover-test
       TypeApplications
   ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   build-depends:
-      QuickCheck
-    , attoparsec
+      QuickCheck ==2.14.2
     , base ==4.14.3.0
-    , bytestring
+    , bytestring ==0.10.12.0
     , mars-rover
-    , tasty
-    , tasty-expected-failure
-    , tasty-hunit
-    , tasty-quickcheck
+    , tasty ==1.4.2.1
+    , tasty-expected-failure ==0.12.3
+    , tasty-hunit ==0.10.0.3
+    , tasty-quickcheck ==0.10.2
   default-language: Haskell2010
