@@ -1,17 +1,20 @@
 {-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Main (main) where
 
 import Control.Monad (forM, forM_)
 import qualified Data.ByteString as B (getLine)
-import Parser (parseGrid, parseRobotAndMoves)
-import Robot
-  ( Grid,
-    RobotState (..),
-    move,
+import GenericRobot
+  ( RobotParser (parseGrid, parseRobotAndMovements),
+    RobotState (Located),
+    SimpleGrid,
+    SimpleRobot,
+    executeMission,
     prettyState,
   )
+import Text.Read (readMaybe)
 
 main :: IO ()
 main = go
@@ -19,20 +22,22 @@ main = go
     go =
       parseGridLine >>= \case
         Left err -> print err >> go
-        Right grid -> do
-          -- This is static at the moment but we could decide to allow more than
-          -- two robots to be entered. It'd be easy to change this by simply
-          -- reading the number of robots from the input.
-          let robotCount = 2 :: Int
-          -- Read all the robots and moves
-          robots <- forM [0 .. robotCount - 1] (const $ fmap parseRobotAndMoves B.getLine)
-          -- Apply moves to the robots or print an error if input is invalid
-          forM_ robots \case
-            Left err -> print err
-            Right (robot, movements) -> do
-              let outcome = move movements grid (Located robot)
-              print $ prettyState outcome
-          go
+        Right grid ->
+          readMaybe @Word <$> getLine >>= \case
+            Nothing -> print "Please provide a positive number of robots" >> go
+            Just robotCount -> do
+              -- Read all the robots and moves
+              robots <- forM [0 .. robotCount - 1] parseRobotAndMovementsLine
+              -- Apply moves to the robots or print an error if input is invalid
+              forM_ robots \case
+                Left err -> print err
+                Right (robot, inputMovements) -> do
+                  let outcome = executeMission inputMovements (grid, Located robot)
+                  print $ prettyState outcome
+              go
 
-    parseGridLine :: IO (Either String Grid)
-    parseGridLine = fmap parseGrid B.getLine
+    parseGridLine :: IO (Either String SimpleGrid)
+    parseGridLine = parseGrid @SimpleRobot <$> B.getLine
+
+    parseRobotAndMovementsLine _ =
+      parseRobotAndMovements @SimpleRobot <$> B.getLine

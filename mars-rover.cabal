@@ -6,8 +6,8 @@ cabal-version: 1.12
 
 name:           mars-rover
 version:        0.1.0.0
-description:    My solution for the Multiverse engineering take-home challenge
 synopsis:       Multiverse engineering take-home challenge
+description:    My solution for the Multiverse engineering take-home challenge
 category:       Other
 author:         Stefano
 maintainer:     Stefano
@@ -26,8 +26,7 @@ flag development
 
 library
   exposed-modules:
-      Parser
-      Robot
+      GenericRobot
   other-modules:
       Paths_mars_rover
   hs-source-dirs:
@@ -41,6 +40,7 @@ library
       attoparsec ==0.13.2.5
     , base ==4.14.3.0
     , bytestring ==0.10.12.0
+    , mtl ==2.2.2
   if flag(development)
     ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   else
@@ -57,6 +57,7 @@ executable mars-rover
       base ==4.14.3.0
     , bytestring ==0.10.12.0
     , mars-rover
+    , mtl ==2.2.2
   if flag(development)
     ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   else
@@ -83,6 +84,7 @@ test-suite mars-rover-test
     , base ==4.14.3.0
     , bytestring ==0.10.12.0
     , mars-rover
+    , mtl ==2.2.2
     , tasty ==1.4.2.1
     , tasty-expected-failure ==0.12.3
     , tasty-hunit ==0.10.0.3
