@@ -5,7 +5,7 @@ import Data.ByteString.Char8 (pack)
 import Data.Either (isLeft)
 import Data.List (intercalate)
 import Parser (parseGrid, parseRobot, parseRobotAndMoves)
-import RobotV1 (Grid, Move (..), Robot (..))
+import Robot (Grid, Movement (..), Robot (..))
 import Test.QuickCheck (Arbitrary)
 import qualified Test.Tasty as T
 import qualified Test.Tasty.HUnit as H
@@ -38,15 +38,15 @@ instance Arbitrary ValidRobot where
         robotString = "(" ++ intercalate comma [show x, show y, show o] ++ ")"
     pure $ ValidRobot (pack robotString, Robot (x, y) o)
 
-newtype ValidMoves = ValidMoves (ByteString, [Move])
+newtype ValidMovements = ValidMovements (ByteString, [Movement])
   deriving (Show)
 
-instance Arbitrary ValidMoves where
+instance Arbitrary ValidMovements where
   arbitrary = do
     n <- QC.chooseInt (1, 100)
-    moves <- QC.vectorOf n $ QC.chooseEnum @Move (minBound, maxBound)
+    moves <- QC.vectorOf n $ QC.chooseEnum @Movement (minBound, maxBound)
     let movesString = foldMap show moves
-    pure $ ValidMoves (pack movesString, moves)
+    pure $ ValidMovements (pack movesString, moves)
 
 tests :: T.TestTree
 tests =
@@ -81,6 +81,6 @@ tests =
   where
     robotAndMoves = do
       ValidRobot (robotString, expectedRobot) <- QC.arbitrary
-      ValidMoves (movesString, expectedMoves) <- QC.arbitrary
+      ValidMovements (movesString, expectedMoves) <- QC.arbitrary
       let input = robotString `append` " " `append` movesString
       pure (input, expectedRobot, expectedMoves)

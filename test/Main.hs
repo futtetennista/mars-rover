@@ -4,7 +4,7 @@
 module Main (main) where
 
 import qualified ParserTest (tests)
-import qualified RobotV1Test (tests)
+import qualified RobotTest (tests)
 import qualified Test.Tasty as T
 
 main :: IO ()
@@ -14,6 +14,6 @@ tests :: T.TestTree
 tests =
   T.testGroup
     "Tests"
-    [ RobotV1Test.tests,
+    [ RobotTest.tests,
       ParserTest.tests
     ]

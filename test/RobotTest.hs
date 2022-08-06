@@ -1,14 +1,14 @@
 {-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module RobotV1Test (tests) where
+module RobotTest (tests) where
 
-import RobotV1
-  ( Move (..),
+import Robot
+  ( Movement (..),
     Orientation (..),
     Robot (..),
     RobotState (..),
-    moveRobot,
+    move,
   )
 import qualified Test.Tasty as T
 import Test.Tasty.ExpectedFailure (ignoreTest)
@@ -21,33 +21,33 @@ tests =
   T.testGroup
     "Tests"
     [ H.testCase "Mars rover found (1)" do
-        let moves = [L, F, R, F, F]
+        let movements = [L, F, R, F, F]
             grid = (4, 8)
             initRobot = Robot (2, 3) E
-            actual = moveRobot moves grid (Found initRobot)
-            expected = Found (Robot (4, 4) E)
+            actual = move movements grid (Located initRobot)
+            expected = Located (Robot (4, 4) E)
         actual H.@?= expected,
       H.testCase "Mars rover found (2)" do
-        let moves = [F, L, L, F, R]
+        let movements = [F, L, L, F, R]
             grid = (4, 8)
             initRobot = Robot (2, 3) N
-            actual = moveRobot moves grid (Found initRobot)
-            expected = Found (Robot (2, 3) W)
+            actual = move movements grid (Located initRobot)
+            expected = Located (Robot (2, 3) W)
         actual H.@?= expected,
       H.testCase "Mars rover lost (1)" do
-        let moves = [F, F, L, F, R, F, F]
+        let movements = [F, F, L, F, R, F, F]
             grid = (4, 8)
             initRobot = Robot (0, 2) N
-            actual = moveRobot moves grid (Found initRobot)
+            actual = move movements grid (Located initRobot)
             expected = Lost (Robot (0, 4) W)
         actual H.@?= expected,
       H.testCase "Mars rover lost (2)" do
-        let moves = [F, F, R, L, F]
+        let movements = [F, F, R, L, F]
             grid = (4, 8)
             initRobot = Robot (1, 0) S
-            actual = moveRobot moves grid (Found initRobot)
+            actual = move movements grid (Located initRobot)
             expected = Lost (Robot (1, 0) S)
         actual H.@?= expected,
-      ignoreTest $ H.testCase "Mars rover movements" do
+      ignoreTest $ H.testCase "[TODO] Mars rover movements" do
         H.assertBool "" False
     ]

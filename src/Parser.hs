@@ -18,7 +18,7 @@ import Data.Attoparsec.ByteString.Char8
     skipSpace,
   )
 import Data.ByteString (ByteString)
-import RobotV1 (Grid, Move (..), Orientation (..), Robot (..))
+import Robot (Grid, Movement (..), Orientation (..), Robot (..))
 
 -- | Parse a grid that must have bounds greater than 0.
 --   e.g. 0 3 is an invalid grid while 10 3 is a valid grid.
@@ -51,12 +51,12 @@ grid = do
 -- >>> parseRobotAndMoves "(1, 3, W) LFRL"
 -- Right (Robot {rPosition = (1,3), rOrientation = W},[L,F,R,L])
 
-parseRobotAndMoves :: ByteString -> Either String (Robot, [Move])
+parseRobotAndMoves :: ByteString -> Either String (Robot, [Movement])
 parseRobotAndMoves = parseOnly parser
   where
     parser = (,) <$> robot <*> (skipSpace *> moves <* endOfInput)
 
-parseMoves :: ByteString -> Either String [Move]
+parseMoves :: ByteString -> Either String [Movement]
 parseMoves = parseOnly moves
 
 -- >>> parseOnly moves ""
@@ -65,7 +65,7 @@ parseMoves = parseOnly moves
 -- Right [L,R,F]
 
 -- | Parse 1 or more moves and fails if no moves are provided
-moves :: Parser [Move]
+moves :: Parser [Movement]
 moves =
   some $
     anyChar >>= \case
@@ -75,7 +75,7 @@ moves =
       c ->
         fail $
           "Illegal move '" ++ [c] ++ "'. Legal moves are: "
-            ++ show [minBound :: Move ..]
+            ++ show [minBound :: Movement ..]
 
 -- >>> parseRobot "(10, 20, N)"
 -- >>> parseRobot "(10, 20, X)"
@@ -89,13 +89,9 @@ parseRobot = parseOnly robot
 
 robot :: Parser Robot
 robot = do
-  _ <- char '('
-  x <- decimal
-  _ <- comma
-  y <- decimal
-  _ <- comma
-  orientation' <- orientation
-  _ <- char ')'
+  x <- char '(' *> decimal
+  y <- comma *> decimal
+  orientation' <- comma *> orientation <* char ')'
   -- If they are less than 0 then either of these two might be the reason:
   -- 1. the input was negative
   -- 2. the input was too big and caused an overflow
