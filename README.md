@@ -30,11 +30,14 @@ page on the Stack website.
 ## Running the program
 
 1. Type `stack install` in your terminal to build and install the binary.
+   Make sure the folder in which Stack installs the binary is in your
+   `PATH`. Stack should have printed a message inviting you to add it if
+   that wasn't the case.
 2. Type `mars-rover` to start the program.
 
 ## Running the tests
 
-Type `stack test` in your terminal to build and install the binary.
+Type `stack test` in your terminal to run all the tests.
 
 ## Continuous integration
 
