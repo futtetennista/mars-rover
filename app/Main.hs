@@ -25,7 +25,7 @@ main = go
           -- reading the number of robots from the input.
           let robotCount = 2 :: Int
           -- Read all the robots and moves
-          robots <- forM [0 .. robotCount] (const $ fmap parseRobotAndMoves B.getLine)
+          robots <- forM [0 .. robotCount - 1] (const $ fmap parseRobotAndMoves B.getLine)
           -- Apply moves to the robots or print an error if input is invalid
           forM_ robots \case
             Left err -> print err
