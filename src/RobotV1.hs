@@ -36,6 +36,7 @@ type Position = (Int, Int)
 
 type Grid = (Int, Int)
 
+-- TODO: add more unit tests to this function
 moveRobot :: [Move] -> Grid -> RobotState -> RobotState
 moveRobot [] _ state = state
 moveRobot _ _ lost@Lost {} = lost
@@ -43,6 +44,7 @@ moveRobot (move : remainingMoves) grid robot' =
   let state' = updateRobotState move grid robot'
    in moveRobot remainingMoves grid state'
 
+-- TODO: add unit tests to this function
 updateRobotState :: Move -> Grid -> RobotState -> RobotState
 updateRobotState move (m, n) = \case
   Lost robot -> Lost robot
@@ -53,6 +55,7 @@ updateRobotState move (m, n) = \case
     isInsideGrid Robot {rPosition = (x, y)} =
       x >= 0 && x <= m && y >= 0 && y <= n
 
+-- TODO: add unit tests to this function
 applyNextMove :: Robot -> Move -> Robot
 applyNextMove = curry robot
   where
