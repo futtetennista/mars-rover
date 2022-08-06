@@ -28,6 +28,10 @@ prettyState = \case
   Lost robot -> prettyRobot robot ++ " LOST"
   Found robot -> prettyRobot robot
 
+-- >>> (0, maxBound::Int)
+-- (0,9223372036854775807)
+-- The grid cannot be greater than the maximum bound for a
+
 type Position = (Int, Int)
 
 type Grid = (Int, Int)

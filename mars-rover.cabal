@@ -26,7 +26,7 @@ library
       GeneralizedNewtypeDeriving
       BlockArguments
       LambdaCase
-  ghc-options: -Wall -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
+  ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   build-depends:
       attoparsec
     , base ==4.14.3.0
@@ -39,7 +39,7 @@ executable application
       Paths_mars_rover
   hs-source-dirs:
       app
-  ghc-options: -Wall -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
+  ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   build-depends:
       base ==4.14.3.0
     , bytestring
@@ -61,7 +61,7 @@ test-suite mars-rover-test
       BlockArguments
       LambdaCase
       TypeApplications
-  ghc-options: -Wall -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
+  ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   build-depends:
       QuickCheck
     , attoparsec
@@ -69,6 +69,7 @@ test-suite mars-rover-test
     , bytestring
     , mars-rover
     , tasty
+    , tasty-expected-failure
     , tasty-hunit
     , tasty-quickcheck
   default-language: Haskell2010
