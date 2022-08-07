@@ -6,7 +6,7 @@
 
 Type `direnv allow .` in your terminal.
 
-This will to install the [Stack](https://docs.haskellstack.org/en/stable,
+This will to install the [Stack](https://docs.haskellstack.org/en/stable),
 build tool for Haskell. You shouldn't need to do anything else.
 
 Type `stack build` in your terminal to build the project.
@@ -37,13 +37,13 @@ Type `stack test` in your terminal to run all the tests.
 ├── package.yaml # dependecies file in yaml
 ├── src
 │   ├── Parser.hs # input parser
-│   └── RobotV1.hs # business logic
+│   └── Robot.hs # business logic
 ├── stack.yaml # build file
 ├── stack.yaml.lock # build file lock
 └── test
     └── Main.hs # test executable
     ├── ParserTest.hs # input parser tests
-    └── RobotV1Test.hs # business logic tests
+    └── RobotTest.hs # business logic tests
 ```
 
 ## Implementation assumptions
@@ -81,6 +81,11 @@ I can imagine that the implementation should accept a grid and then as many robo
 until the program is terminated. It was unclear and I simply followed the examples.
 Modifying the implementation is trivial.
 
+## Continuous integration
+
+A Github Action is setup using [Haskell CI](https://github.com/haskell-CI/haskell-ci)
+to automate building and testing the project.
+
 ## Future work
 
 * Clarify requirements (see provious point)
@@ -88,7 +93,6 @@ Modifying the implementation is trivial.
   or allow to express diagonal movements in one move etc.
 * Add more unit tests
 * Build and run code in a dockerised environment
-* Create a CI / CD pipeline to build and run tests
 * Support more than 2 robots
 * Support larger grids
 * Expose an API
