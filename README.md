@@ -20,9 +20,9 @@ Both should be pre-installed on your machine.
    Please be patient the first time you run it. It might take a while for it
    to download the compiler and dependencies and build them.
 
-I tested this on Mac OS X Catalina and Ubuntu but not on Windows.
+It should work on Mac OS X Catalina and Ubuntu. It might work on Windows.
 
-## Uninstalling
+### Uninstalling
 
 See the page [How to uninstall](https://docs.haskellstack.org/en/stable/README/#how-to-uninstall)
 page on the Stack website.
@@ -55,19 +55,19 @@ to automate building and testing the project.
 ├── package.yaml # dependecies file in yaml
 ├── src
 │   ├── Parser.hs # input parser
-│   └── RobotV1.hs # business logic
+│   └── Robot.hs # business logic
 ├── stack.yaml # build file
 ├── stack.yaml.lock # build file lock
 └── test
     └── Main.hs # test module
     ├── ParserTest.hs # input parser tests
-    └── RobotV1Test.hs # business logic tests
+    └── RobotTest.hs # business logic tests
 ```
 
 ## Assumptions
 
 The problem description leaves some details a little bit vague and I had
-to make some assumptions in order to implementat a solution.
+to make some assumptions in order to implement a solution.
 
 > The world should be modelled as a grid with size m x n
 
@@ -80,8 +80,7 @@ which means that the maximum value is:
 ```
 
 The code checks for overflow and in case it rejects the input. I could have used
-`Integer` (unbounded `Int`s) and I choose to be conservative since the maximum
-bound for `Int`s is already quite high.
+`Integer` (unbounded `Int`s) to allow for a bigger grid.
 
 > Your program should read the input, update the robots, and print out
   the final states of the robots
@@ -105,6 +104,11 @@ but a more realistic implementation might be:
 
 Changing this part of the implementation is trivial.
 
+## Continuous integration
+
+A Github Action is setup using [Haskell CI](https://github.com/haskell-CI/haskell-ci)
+to automate building and testing the project.
+
 ## Future work
 
 * Clarify requirements (see provious point)
@@ -112,7 +116,6 @@ Changing this part of the implementation is trivial.
   or allow to express diagonal movements in one move etc.
 * Add more unit tests esp. of th business logic
 * Build and run code in a dockerised environment
-* Support more than 2 robots as inputs
 * Support larger grids
 * Expose an API
 * Handle some parsing errors more gracefully e.g. `"not enough input"` error

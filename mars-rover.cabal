@@ -6,14 +6,23 @@ cabal-version: 1.12
 
 name:           mars-rover
 version:        0.1.0.0
+description:    My solution for the Multiverse engineering take-home challenge
+synopsis:       Multiverse engineering take-home challenge
+category:       Other
 author:         Stefano
 maintainer:     Stefano
+license:        MIT
+license-file:   LICENSE
 build-type:     Simple
 tested-with:
     GHC == 8.10.7
 extra-source-files:
     README.md
     stack.yaml
+
+flag development
+  manual: True
+  default: False
 
 library
   exposed-modules:
@@ -28,11 +37,14 @@ library
       GeneralizedNewtypeDeriving
       BlockArguments
       LambdaCase
-  ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   build-depends:
       attoparsec ==0.13.2.5
     , base ==4.14.3.0
     , bytestring ==0.10.12.0
+  if flag(development)
+    ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
+  else
+    ghc-options: -Wall -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   default-language: Haskell2010
 
 executable mars-rover
@@ -41,11 +53,14 @@ executable mars-rover
       Paths_mars_rover
   hs-source-dirs:
       app
-  ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   build-depends:
       base ==4.14.3.0
     , bytestring ==0.10.12.0
     , mars-rover
+  if flag(development)
+    ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
+  else
+    ghc-options: -Wall -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   default-language: Haskell2010
 
 test-suite mars-rover-test
@@ -63,7 +78,6 @@ test-suite mars-rover-test
       BlockArguments
       LambdaCase
       TypeApplications
-  ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   build-depends:
       QuickCheck ==2.14.2
     , base ==4.14.3.0
@@ -73,4 +87,8 @@ test-suite mars-rover-test
     , tasty-expected-failure ==0.12.3
     , tasty-hunit ==0.10.0.3
     , tasty-quickcheck ==0.10.2
+  if flag(development)
+    ghc-options: -Wall -Werror -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
+  else
+    ghc-options: -Wall -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -optP-Wno-nonportable-include-path
   default-language: Haskell2010
