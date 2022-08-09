@@ -48,6 +48,10 @@ tests =
             actual = move movements grid (Located initRobot)
             expected = Lost (Robot (1, 0) S)
         actual H.@?= expected,
-      ignoreTest $ H.testCase "[TODO] Mars rover movements" do
+      ignoreTest $ H.testCase "Mars rover movements" do
+        H.assertBool "" False,
+      ignoreTest $ H.testCase "Position greater than grid bounds is not inside grid" do
+        H.assertBool "" False,
+      ignoreTest $ H.testCase "Negative position is not inside grid" do
         H.assertBool "" False
     ]

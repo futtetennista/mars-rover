@@ -5,7 +5,7 @@ import Data.ByteString.Char8 (pack)
 import Data.Either (isLeft)
 import Data.List (intercalate)
 import Parser (parseGrid, parseRobot, parseRobotAndMoves)
-import Robot (Grid, Movement (..), Robot (..))
+import Robot (Grid, Movement (..), Orientation (..), Robot (..))
 import Test.QuickCheck (Arbitrary)
 import qualified Test.Tasty as T
 import qualified Test.Tasty.HUnit as H
@@ -60,14 +60,21 @@ tests =
           "Expected parsing to fail"
           (isLeft $ parseGrid "4  -8"),
 
-      ignoreTest $ H.testCase "Parse grid with 0 bounds fails" do
-        H.assertBool "Expected parsing to fail" False,
+      H.testCase "Parse grid with 0 bounds fails" do
+        H.assertBool "Expected parsing to fail" $ isLeft $ parseGrid "1 0"
+        H.assertBool "Expected parsing to fail" $ isLeft $ parseGrid "0 1"
+        H.assertBool "Expected parsing to fail" $ isLeft $ parseGrid "0 0",
 
       ignoreTest $ H.testCase "Parse grid with bounds too big 0 fails" do
         H.assertBool "Expected parsing to fail" False,
 
       H.testProperty "Parse valid robot" \(ValidRobot (input, expectedRobot)) ->
         parseRobot input == Right expectedRobot,
+
+      H.testCase "Parse robot with 0 position" do
+        H.assertBool "Expected parsing to succeed" $ parseRobot "(0, 0, W)" == Right (Robot (0, 0) W)
+        H.assertBool "Expected parsing to succeed" $ parseRobot "(0, 1, W)" == Right (Robot (0, 1) W)
+        H.assertBool "Expected parsing to succeed" $ parseRobot "(1, 0, W)" == Right (Robot (1, 0) W),
 
       H.testCase "Parse invalid robot" do
         H.assertBool
@@ -76,7 +83,7 @@ tests =
 
       H.testProperty "Parse robot and moves" $
         QC.forAll robotAndMoves \(input, expectedRobot, expectedMoves) ->
-          parseRobotAndMoves input == Right (expectedRobot, expectedMoves)
+            parseRobotAndMoves input == Right (expectedRobot, expectedMoves)
     ]
   where
     robotAndMoves = do

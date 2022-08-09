@@ -18,7 +18,7 @@ import Data.Attoparsec.ByteString.Char8
     skipSpace,
   )
 import Data.ByteString (ByteString)
-import Robot (Grid, Movement (..), Orientation (..), Robot (..))
+import Robot (Grid, Movement (..), Orientation (..), Robot (..), checkGrid, checkPosition)
 
 -- | Parse a grid that must have bounds greater than 0.
 --   e.g. 0 3 is an invalid grid while 10 3 is a valid grid.
@@ -32,7 +32,7 @@ grid = do
   -- If they are less than 0 then either of these two might be the reason:
   -- 1. the input was negative
   -- 2. the input was too big and caused an overflow
-  when (n <= 0 || m <= 0) do
+  when (checkGrid (n, m)) do
     fail $
       "Grid bounds must be greater than 0 but were: ("
         ++ show n
@@ -95,7 +95,7 @@ robot = do
   -- If they are less than 0 then either of these two might be the reason:
   -- 1. the input was negative
   -- 2. the input was too big and caused an overflow
-  when (x <= 0 || y <= 0) do
+  when (checkPosition (x, y)) do
     fail $
       "Coordinates must be between 0 and " ++ show (maxBound :: Int)
         ++ " but were: ("

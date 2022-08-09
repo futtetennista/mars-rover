@@ -11,6 +11,8 @@ module Robot
     Grid,
     move,
     prettyState,
+    checkGrid,
+    checkPosition,
   )
 where
 
@@ -59,9 +61,18 @@ prettyState = \case
 -- (0,9223372036854775807)
 -- The grid cannot be greater than the maximum bound for a
 
+checkBounds :: Num a => (a, a) -> (a -> Bool) -> Bool
+checkBounds (x, y) f = f x || f y
+
 type Position = (Int, Int)
 
+checkPosition :: (Ord a, Num a) => (a, a) -> Bool
+checkPosition = flip checkBounds (< 0)
+
 type Grid = (Int, Int)
+
+checkGrid :: (Ord a, Num a) => (a, a) -> Bool
+checkGrid = flip checkBounds (<= 0)
 
 -- TODO: add more unit tests to this function
 move :: [Movement] -> Grid -> RobotState -> RobotState
