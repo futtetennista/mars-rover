@@ -104,11 +104,6 @@ but a more realistic implementation might be:
 
 Changing this part of the implementation is trivial.
 
-## Continuous integration
-
-A Github Action is setup using [Haskell CI](https://github.com/haskell-CI/haskell-ci)
-to automate building and testing the project.
-
 ## Future work
 
 * Clarify requirements (see provious point)
