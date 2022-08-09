@@ -113,8 +113,8 @@ to automate building and testing the project.
 
 * Clarify requirements (see provious point)
 * Make robot generic to support different capabilities e.g. move more than 1 step,
-  or allow to express diagonal movements in one move etc.
-* Add more unit tests esp. of th business logic
+  or allow to express diagonal movements in one instruction etc.
+* Add more unit tests esp. of the business logic
 * Build and run code in a dockerised environment
 * Support larger grids
 * Expose an API
